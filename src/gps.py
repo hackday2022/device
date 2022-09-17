@@ -37,17 +37,19 @@ def main():
             time = my_gps.timestamp
             hour, minute, second = time[0], time[1], int(time[2])
             tm_now = (hour * 3600) + (minute * 60) + second
-            if (tm_now - tm_last) < INTERVAL:
+            if 0 <= (tm_now - tm_last) < INTERVAL:
                 continue
             tm_last = tm_now
 
             year, month, day = parse_date(my_gps.date)
             if year == "0" or month == "0" or day == "0":
+                print(f"Date is invalid: {year} {month} {day}")
                 continue
             datetime_str = f"{year} {month} {day} {hour} {minute} {second}"
 
             lat, lng = my_gps.latitude[0], my_gps.longitude[0]
             if lat == 0 or lng == 0:
+                print(f"lat or lng is invalid: {lat} {lng}")
                 continue
             # NOTE: add value to hide real one
             lat += random.random()

@@ -30,3 +30,8 @@ def send_gps_id(id: str):
     doc_ref.update({
         u'gpsIdOnAlerted': firestore.ArrayUnion([id])
     })
+
+
+def nearby_public_info(lat:float,lng:float):
+    public_ref=db.collection(u'public')
+    query_ref=public_ref.where(u'latitude')

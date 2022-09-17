@@ -3,7 +3,7 @@ import time
 
 from firestore import send_gps_id
 from gps import GPS_LOG_PATH
-from gps_util import parse_last_line
+from util import parse_last_line
 from sig_handler import SigHandler
 
 
