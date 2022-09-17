@@ -4,6 +4,7 @@ import time
 from firestore import send_gps_id
 from gps import GPS_LOG_PATH
 from gps_util import read_last_line, parse_line
+from sig_handler import SigHandler
 
 
 AUDIO_PIN = 21
@@ -13,7 +14,9 @@ BUTTON_PIN = 5
 def main():
     pwm = GPIO.PWM(AUDIO_PIN, 1)
 
-    while True:
+    sig_handler = SigHandler()
+
+    while not sig_handler.killed:
         if GPIO.input(BUTTON_PIN) == 0:
             print("Button pressed")
 

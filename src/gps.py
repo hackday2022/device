@@ -4,6 +4,7 @@ import uuid
 
 from firestore import send_gps_log
 from micropyGPS import MicropyGPS
+from sig_handler import SigHandler
 
 
 INTERVAL = 60
@@ -15,8 +16,10 @@ def main():
     uart = serial.Serial(SERIAL_PORT, 9600, timeout=10)
     my_gps = MicropyGPS(9, 'dd')
 
+    sig_handler = SigHandler()
+
     tm_last = 0
-    while True:
+    while not sig_handler.killed:
         sentence = uart.readline()
         if len(sentence) == 0:
             continue
@@ -44,6 +47,9 @@ def main():
             lat, lng = my_gps.latitude[0], my_gps.longitude[0]
             if lat == 0 or lng == 0:
                 continue
+            # NOTE: add value to hide real one
+            lat += 0.5
+            lng += 0.5
 
             id = str(uuid.uuid4())
 
@@ -51,6 +57,8 @@ def main():
             with open(GPS_LOG_PATH, "a") as f:
                 f.write(f"{id},{datetime_str},{lat},{lng}\n")
             dump_gps(id, datetime_str, lat, lng)
+
+    print("Finish gps")
 
 
 def parse_date(date: list):
