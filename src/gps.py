@@ -37,10 +37,13 @@ def main():
             tm_last = tm_now
 
             year, month, day = parse_date(my_gps.date)
-            if year == "0":
+            if year == "0" or month == "0" or day == "0":
                 continue
             datetime_str = f"{year} {month} {day} {hour} {minute} {second}"
+
             lat, lng = my_gps.latitude[0], my_gps.longitude[0]
+            if lat == 0 or lng == 0:
+                continue
 
             id = str(uuid.uuid4())
 
