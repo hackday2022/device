@@ -9,9 +9,12 @@ cred = credentials.Certificate(os.path.dirname(__file__)+"/../hackday-2022-126c3
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
+DEVICE_ID = os.environ["DEVICE_ID"]
+db.collection(u'devices').document(DEVICE_ID).set({}, merge=True)
+
 
 def send_gps_log(dt: datetime.datetime, lat: float, lng: float, id: str):
-    doc_ref = db.collection(u'devices').document(u'1')
+    doc_ref = db.collection(u'devices').document(DEVICE_ID)
     doc_ref.update({
         u'gpsLogs': firestore.ArrayUnion([{
             u'time': dt,
@@ -23,7 +26,7 @@ def send_gps_log(dt: datetime.datetime, lat: float, lng: float, id: str):
 
 
 def send_gps_id(id: str):
-    doc_ref = db.collection(u'devices').document(u'1')
+    doc_ref = db.collection(u'devices').document(DEVICE_ID)
     doc_ref.update({
         u'gpsIdOnAlerted': firestore.ArrayUnion([id])
     })

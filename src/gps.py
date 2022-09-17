@@ -1,3 +1,4 @@
+import os
 import serial
 import uuid
 
@@ -7,10 +8,11 @@ from micropyGPS import MicropyGPS
 
 INTERVAL = 60
 GPS_LOG_PATH = "/var/log/device/gps.log"
+SERIAL_PORT = os.environ.get("SERIAL_PORT", "/dev/serial0")
 
 
 def main():
-    uart = serial.Serial('/dev/serial0', 9600, timeout=10)
+    uart = serial.Serial(SERIAL_PORT, 9600, timeout=10)
     my_gps = MicropyGPS(9, 'dd')
 
     tm_last = 0
@@ -35,6 +37,8 @@ def main():
             tm_last = tm_now
 
             year, month, day = parse_date(my_gps.date)
+            if year == "0":
+                continue
             datetime_str = f"{year} {month} {day} {hour} {minute} {second}"
             lat, lng = my_gps.latitude[0], my_gps.longitude[0]
 
