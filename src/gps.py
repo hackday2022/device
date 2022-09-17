@@ -1,8 +1,10 @@
 import os
+import random
 import serial
 import uuid
 
 from firestore import send_gps_log
+from gps_util import parse_datetime
 from micropyGPS import MicropyGPS
 from sig_handler import SigHandler
 
@@ -48,12 +50,12 @@ def main():
             if lat == 0 or lng == 0:
                 continue
             # NOTE: add value to hide real one
-            lat += 0.5
-            lng += 0.5
+            lat += random.random()
+            lng += random.random()
 
             id = str(uuid.uuid4())
 
-            send_gps_log(datetime_str, lat, lng, id)
+            send_gps_log(parse_datetime(datetime_str), lat, lng, id)
             with open(GPS_LOG_PATH, "a") as f:
                 f.write(f"{id},{datetime_str},{lat},{lng}\n")
             dump_gps(id, datetime_str, lat, lng)
