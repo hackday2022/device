@@ -1,5 +1,10 @@
-import time
 import RPi.GPIO as GPIO
+import time
+
+from firestore import send_gps_id
+from gps import GPS_LOG_PATH
+from gps_util import read_last_line, parse_line
+
 
 AUDIO_PIN = 21
 BUTTON_PIN = 5
@@ -12,7 +17,7 @@ def main():
         if GPIO.input(BUTTON_PIN) == 0:
             print("Button pressed")
 
-            send_gps_log()
+            send(GPS_LOG_PATH)
             while GPIO.input(BUTTON_PIN) == 0:
                 buzzer(pwm)
                 time.sleep(0.01)
@@ -26,6 +31,13 @@ def init():
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
     GPIO.setup(AUDIO_PIN, GPIO.OUT, initial=GPIO.LOW)
+
+
+def send(gps_log_path:str):
+    print("Send gps log")
+    line = read_last_line(gps_log_path)
+    id, _, _, _ = parse_line(line)
+    send_gps_id(id)
 
 
 FREQ_MIN = 599
@@ -45,10 +57,6 @@ def buzzer(pwm):
         time.sleep(INTERVAL)
 
     pwm.stop()
-
-
-def send_gps_log():
-    print("Send GPS log")
 
 
 if __name__ == "__main__":
