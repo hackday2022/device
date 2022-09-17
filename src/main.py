@@ -3,7 +3,7 @@ import time
 
 from firestore import send_gps_id
 from gps import GPS_LOG_PATH
-from gps_util import read_last_line, parse_line
+from gps_util import parse_last_line
 from sig_handler import SigHandler
 
 
@@ -36,10 +36,9 @@ def init():
     GPIO.setup(AUDIO_PIN, GPIO.OUT, initial=GPIO.LOW)
 
 
-def send(gps_log_path:str):
+def send(gps_log_path: str):
     print("Send gps log")
-    line = read_last_line(gps_log_path)
-    id, _, _, _ = parse_line(line)
+    id, _, _, _ = parse_last_line(gps_log_path)
     send_gps_id(id)
 
 

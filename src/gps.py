@@ -4,7 +4,7 @@ import serial
 import uuid
 
 from firestore import send_gps_log
-from gps_util import parse_datetime
+from util import parse_datetime
 from micropyGPS import MicropyGPS
 from sig_handler import SigHandler
 

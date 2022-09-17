@@ -3,6 +3,11 @@ import datetime
 from dateutil import tz
 
 
+def parse_last_line(path: str):
+    line = read_last_line(path)
+    return parse_line(line)
+
+
 def read_last_line(path: str) -> str:
     line = ""
     with open(path) as f:
