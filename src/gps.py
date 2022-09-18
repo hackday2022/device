@@ -43,13 +43,13 @@ def main():
 
             year, month, day = parse_date(my_gps.date)
             if year == "0" or month == "0" or day == "0":
-                print(f"Date is invalid: {year} {month} {day}")
+                print(f"Date is invalid: {year} {month} {day}", flush=True)
                 continue
             datetime_str = f"{year} {month} {day} {hour} {minute} {second}"
 
             lat, lng = my_gps.latitude[0], my_gps.longitude[0]
             if lat == 0 or lng == 0:
-                print(f"lat or lng is invalid: {lat} {lng}")
+                print(f"lat or lng is invalid: {lat} {lng}", flush=True)
                 continue
             # NOTE: add value to hide real one
             lat += random.random()
@@ -77,7 +77,7 @@ def dump_gps(id: str, date: str, latitude: float, longitude: float):
     print(f"id: {id}")
     print(f"date: {date}")
     print(f"latitude: {latitude}")
-    print(f"longitude: {longitude}")
+    print(f"longitude: {longitude}", flush=True)
 
 
 if __name__ == "__main__":

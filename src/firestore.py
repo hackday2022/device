@@ -15,23 +15,15 @@ db.collection(u'devices').document(DEVICE_ID).set({}, merge=True)
 
 def send_gps_log(dt: datetime.datetime, lat: float, lng: float, id: str):
     doc_ref = db.collection(u'devices').document(DEVICE_ID)
-    doc_ref.update({
-        u'gpsLogs': firestore.ArrayUnion([{
-            u'time': dt,
-            u'latitude': lat,
-            u'longitude': lng,
-            u'id': id,
-        }])
-    })
+    gps_log = {
+        u'time': dt,
+        u'latitude': lat,
+        u'longitude': lng,
+        u'id': id,
+    }
+    doc_ref.update({u'gpsLogs': firestore.ArrayUnion([gps_log])})
 
 
 def send_gps_id(id: str):
     doc_ref = db.collection(u'devices').document(DEVICE_ID)
-    doc_ref.update({
-        u'gpsIdOnAlerted': firestore.ArrayUnion([id])
-    })
-
-
-def nearby_public_info(lat:float,lng:float):
-    public_ref=db.collection(u'public')
-    query_ref=public_ref.where(u'latitude')
+    doc_ref.update({u'gpsIdOnAlerted': firestore.ArrayUnion([id])})

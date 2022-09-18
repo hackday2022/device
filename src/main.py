@@ -18,14 +18,14 @@ def main():
 
     while not sig_handler.killed:
         if GPIO.input(BUTTON_PIN) == 0:
-            print("Button pressed")
+            print("Button pressed", flush=True)
 
             send(GPS_LOG_PATH)
             while GPIO.input(BUTTON_PIN) == 0:
                 buzzer(pwm)
                 time.sleep(0.01)
 
-            print("Button released")
+            print("Button released", flush=True)
 
         time.sleep(0.03)
 
@@ -37,7 +37,7 @@ def init():
 
 
 def send(gps_log_path: str):
-    print("Send gps log")
+    print("Send gps log", flush=True)
     id, _, _, _ = parse_last_line(gps_log_path)
     send_gps_id(id)
 
